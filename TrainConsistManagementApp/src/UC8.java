@@ -1,11 +1,12 @@
 import java.util.*;
+import java.util.stream.*;
 
-public class UC7 {
+public class UC8 {
 
     // Bogie class
     static class Bogie {
         String name;
-        String type; // Sleeper, AC Chair, First Class
+        String type;
         int capacity;
 
         Bogie(String name, String type, int capacity) {
@@ -15,7 +16,6 @@ public class UC7 {
         }
     }
 
-    // List to store bogies
     private List<Bogie> bogieList = new ArrayList<>();
 
     // Add bogie
@@ -31,23 +31,34 @@ public class UC7 {
             return;
         }
 
-        System.out.println("\n🚆 Train Bogies:");
-        for (Bogie b : bogieList) {
-            System.out.println(b.name + " | " + b.type + " | Capacity: " + b.capacity);
-        }
+        System.out.println("\n🚆 All Bogies:");
+        bogieList.forEach(b ->
+                System.out.println(b.name + " | " + b.type + " | Capacity: " + b.capacity)
+        );
     }
 
-    // 🔥 UC7: Sort using Comparator
+    // 🔥 UC7: Sort (kept for continuity)
     public void sortByCapacity() {
-        bogieList.sort(new Comparator<Bogie>() {
-            @Override
-            public int compare(Bogie b1, Bogie b2) {
-                return b2.capacity - b1.capacity; // Descending
-            }
-        });
-
-        System.out.println("\n📊 Bogies sorted by capacity (High → Low):");
+        bogieList.sort((b1, b2) -> b2.capacity - b1.capacity);
+        System.out.println("\n📊 Sorted by Capacity:");
         displayBogies();
+    }
+
+    // 🔥 UC8: Filter using Stream
+    public void filterHighCapacity(int minCapacity) {
+        List<Bogie> filtered = bogieList.stream()
+                .filter(b -> b.capacity >= minCapacity)
+                .collect(Collectors.toList());
+
+        if (filtered.isEmpty()) {
+            System.out.println("No bogies match the criteria.");
+            return;
+        }
+
+        System.out.println("\n🔍 Bogies with capacity >= " + minCapacity + ":");
+        filtered.forEach(b ->
+                System.out.println(b.name + " | " + b.type + " | Capacity: " + b.capacity)
+        );
     }
 
     // Main method
@@ -60,7 +71,8 @@ public class UC7 {
             System.out.println("1. Add Passenger Bogie");
             System.out.println("2. Display Bogies");
             System.out.println("3. Sort by Capacity");
-            System.out.println("4. Exit");
+            System.out.println("4. Filter by Capacity (UC8)");
+            System.out.println("5. Exit");
             System.out.print("Enter choice: ");
 
             int choice = sc.nextInt();
@@ -89,6 +101,12 @@ public class UC7 {
                     break;
 
                 case 4:
+                    System.out.print("Enter minimum capacity: ");
+                    int min = sc.nextInt();
+                    app.filterHighCapacity(min);
+                    break;
+
+                case 5:
                     System.out.println("Exiting...");
                     return;
 
