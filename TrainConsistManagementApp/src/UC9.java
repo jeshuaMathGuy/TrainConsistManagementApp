@@ -1,12 +1,12 @@
 import java.util.*;
 import java.util.stream.*;
 
-public class UC8 {
+public class UC9{
 
     // Bogie class
     static class Bogie {
         String name;
-        String type;
+        String type; // Sleeper, AC Chair, First Class
         int capacity;
 
         Bogie(String name, String type, int capacity) {
@@ -37,14 +37,14 @@ public class UC8 {
         );
     }
 
-    // 🔥 UC7: Sort (kept for continuity)
+    // UC7: Sort by capacity
     public void sortByCapacity() {
         bogieList.sort((b1, b2) -> b2.capacity - b1.capacity);
         System.out.println("\n📊 Sorted by Capacity:");
         displayBogies();
     }
 
-    // 🔥 UC8: Filter using Stream
+    // UC8: Filter by capacity
     public void filterHighCapacity(int minCapacity) {
         List<Bogie> filtered = bogieList.stream()
                 .filter(b -> b.capacity >= minCapacity)
@@ -61,6 +61,20 @@ public class UC8 {
         );
     }
 
+    // 🔥 UC9: Group by Type
+    public void groupByType() {
+        Map<String, List<Bogie>> grouped = bogieList.stream()
+                .collect(Collectors.groupingBy(b -> b.type));
+
+        System.out.println("\n📂 Bogies Grouped by Type:");
+        grouped.forEach((type, list) -> {
+            System.out.println("\nType: " + type);
+            list.forEach(b ->
+                    System.out.println("  " + b.name + " | Capacity: " + b.capacity)
+            );
+        });
+    }
+
     // Main method
     public static void main(String[] args) {
         TrainConsistManagementApp app = new TrainConsistManagementApp();
@@ -71,8 +85,9 @@ public class UC8 {
             System.out.println("1. Add Passenger Bogie");
             System.out.println("2. Display Bogies");
             System.out.println("3. Sort by Capacity");
-            System.out.println("4. Filter by Capacity (UC8)");
-            System.out.println("5. Exit");
+            System.out.println("4. Filter by Capacity");
+            System.out.println("5. Group by Type (UC9)");
+            System.out.println("6. Exit");
             System.out.print("Enter choice: ");
 
             int choice = sc.nextInt();
@@ -107,6 +122,10 @@ public class UC8 {
                     break;
 
                 case 5:
+                    app.groupByType();
+                    break;
+
+                case 6:
                     System.out.println("Exiting...");
                     return;
 
